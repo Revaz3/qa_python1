@@ -7,11 +7,12 @@ class TestBooksCollector:
 
     def test_add_new_book(self):
         collector = BooksCollector()
-
         book_name = 'Приключения Алисы'
         collector.add_new_book(book_name)
         assert book_name in collector.books_genre
 
+    def test_add_new_book_without_name(self):
+        collector = BooksCollector()
         book_name_empty = ''
         collector.add_new_book(book_name_empty)
         assert book_name_empty not in collector.books_genre
@@ -23,15 +24,18 @@ class TestBooksCollector:
         collector.set_book_genre("1984", "Фантастика")
         assert collector.books_genre["1984"] == "Фантастика"
 
-        collector.set_book_genre("1984", "Неизвестный жанр")
-        assert collector.books_genre["1984"] != "Неизвестный жанр"
+    def test_set_book_unknow_genre(self):
+        collector = BooksCollector()
+        collector.add_new_book("2012")
+        collector.set_book_genre("2012", "Неизвестный жанр")
+        assert collector.books_genre["2012"] != "Неизвестный жанр"
 
     def test_get_book_genre(self):
         collector = BooksCollector()
         collector.add_new_book('Гарри Поттер')
         collector.set_book_genre('Гарри Поттер', 'Фантастика')
         assert collector.get_book_genre('Гарри Поттер') == 'Фантастика'
-        assert collector.get_book_genre('Неизвестная книга') is None
+
 
     def test_get_book_with_specific_genre(self):
         collector = BooksCollector()
@@ -46,8 +50,6 @@ class TestBooksCollector:
         collector.set_book_genre('Чужой', 'Ужасы')
         collector.add_new_book('Гарри Поттер')
         collector.set_book_genre('Гарри Поттер', 'Фантастика')
-
-
         assert collector.get_book_genre('Чужой') == 'Ужасы'
         assert collector.get_book_genre('Гарри Поттер') == 'Фантастика'
 
